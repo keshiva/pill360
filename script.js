@@ -1,12 +1,12 @@
-// Firebase configuration - USE YOUR ACTUAL CONFIG FROM FIREBASE
+// Firebase Configuration (replace with your actual config)
 const firebaseConfig = {
-    apiKey: "AIzaSyA7380_3e1rglsdzdWbnOztsHdNv77N8aM",
-    authDomain: "pill360.firebaseapp.com",
-    databaseURL: "https://pill360.firebaseio.com",
-    projectId: "pill360",
-    storageBucket: "pill360.appspot.com",
-    messagingSenderId: "592976629232",
-    appId: "1:592976629232:web:df1089647663f5cd162135"
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    databaseURL: "https://YOUR_PROJECT.firebaseio.com",
+    projectId: "YOUR_PROJECT",
+    storageBucket: "YOUR_PROJECT.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
 };
 
 // Initialize Firebase
@@ -18,41 +18,41 @@ const pillCountEl = document.getElementById('pillCount');
 const dispenseBtn = document.getElementById('dispenseBtn');
 const pillHistoryEl = document.getElementById('pillHistory');
 
-// Real-time listener for pill count
+// Real-time Database Listeners
 database.ref('pills/count').on('value', (snapshot) => {
     const count = snapshot.val() || 0;
     pillCountEl.textContent = count;
 });
 
-// Listener for pill history
 database.ref('pills/history').limitToLast(10).on('value', (snapshot) => {
-    pillHistoryEl.innerHTML = ''; // Clear current history
-    
+    pillHistoryEl.innerHTML = '';
     const history = snapshot.val() || {};
-    Object.entries(history).forEach(([timestamp, pillData]) => {
+
+    Object.entries(history).forEach(([timestamp, data]) => {
+        const time = new Date(parseInt(timestamp)).toLocaleTimeString();
         const listItem = document.createElement('div');
         listItem.className = 'list-group-item';
-        
-        const time = new Date(parseInt(timestamp)).toLocaleString();
         listItem.innerHTML = `
-            <span>${pillData.pillName || 'Medication'}</span>
-            <small class="text-muted">${time}</small>
+            <div>
+                <strong>${data.pillName || 'Medication'}</strong>
+                <div class="text-muted small">${data.dose || ''}</div>
+            </div>
+            <div class="text-end">
+                <small class="text-muted">${time}</small>
+                <div class="badge bg-primary">Dispensed</div>
+            </div>
         `;
-        
-        pillHistoryEl.prepend(listItem);
+        pillHistoryEl.appendChild(listItem);
     });
 });
 
-// Dispense button handler
+// Dispense Button Handler
 dispenseBtn.addEventListener('click', () => {
-    // Send command to Arduino (replace with your ESP32's IP)
-    fetch('http://YOUR_ESP32_IP/dispense', { method: 'POST' })
-        .then(response => {
-            if (!response.ok) throw new Error('Failed to dispense');
-            console.log('Dispense command sent');
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Failed to connect to dispenser');
-        });
+    // Send command to Arduino
+    fetch('http://YOUR_ESP32_IP/dispense', { 
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ time: Date.now() })
+    })
+    .catch(error => console.error('Dispense error:', error));
 });
