@@ -1,25 +1,18 @@
-/* Light Mode (Default) */
+/* Default Light Mode */
 body {
-    background-color: #f8f9fa;
-    color: #212529;
-}
-
-.card {
     background-color: white;
-    border-color: #dee2e6;
+    color: black;
+    transition: 0.3s;
 }
 
-/* Dark Mode */
-body.dark-mode {
-    background-color: #121212;
-    color: #f8f9fa;
+/* Dark Mode - Just makes background black and text white */
+body.dark {
+    background-color: black;
+    color: white;
 }
 
-body.dark-mode .card {
-    background-color: #1e1e1e;
-    border-color: #444;
-}
-
-body.dark-mode .border-bottom {
-    border-color: #444 !important;
+/* Make sure the card is visible in dark mode */
+.card {
+    background-color: inherit;
+    border-color: gray;
 }
