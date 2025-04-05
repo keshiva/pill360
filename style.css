@@ -21,17 +21,13 @@ body.dark-mode .card {
     border-color: #444;
 }
 
-/* Eye Comfort Filter (Works in both modes) */
-body.eye-comfort {
-    filter: sepia(0.3) saturate(0.8) brightness(1.1) !important;
-}
-
-body.dark-mode.eye-comfort {
-    filter: sepia(0.2) brightness(0.9) hue-rotate(180deg) !important;
-}
-
 /* Toggle Styles */
 .form-check-input:checked {
     background-color: #0d6efd;
     border-color: #0d6efd;
+}
+
+/* History Items */
+.border-bottom {
+    border-color: inherit !important;
 }
