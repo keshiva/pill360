@@ -1,47 +1,69 @@
-body {
-    background-color: #f8f9fa;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+// DOM Elements
+const darkModeToggle = document.getElementById('darkModeToggle');
+const blueLightFilter = document.getElementById('blueLightFilter');
+const blueLightContainer = document.getElementById('blueLightContainer');
+
+// Dark Mode Toggle
+darkModeToggle.addEventListener('change', () => {
+    const isDarkMode = darkModeToggle.checked;
+    document.body.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+    
+    // Disable blue light filter in dark mode
+    if (isDarkMode) {
+        document.documentElement.style.setProperty('--blue-light-opacity', '0');
+        blueLightFilter.value = 0;
+        blueLightContainer.style.opacity = '0.5';
+    } else {
+        blueLightContainer.style.opacity = '1';
+    }
+    
+    localStorage.setItem('darkMode', isDarkMode);
+});
+
+// Blue Light Filter Slider
+blueLightFilter.addEventListener('input', (e) => {
+    const opacity = e.target.value / 100;
+    document.documentElement.style.setProperty('--blue-light-opacity', opacity);
+    localStorage.setItem('blueLightFilter', e.target.value);
+});
+
+// Initialize
+function loadPreferences() {
+    // Dark Mode
+    if (localStorage.getItem('darkMode') === 'true') {
+        darkModeToggle.checked = true;
+        document.body.setAttribute('data-theme', 'dark');
+        blueLightContainer.style.opacity = '0.5';
+    }
+    
+    // Blue Light Filter
+    const savedFilterValue = localStorage.getItem('blueLightFilter') || '0';
+    blueLightFilter.value = savedFilterValue;
+    document.documentElement.style.setProperty(
+        '--blue-light-opacity', 
+        savedFilterValue / 100
+    );
 }
 
-.card {
-    border: none;
-    border-radius: 12px;
-    overflow: hidden;
+loadPreferences();
+
+// Pill History Simulation (replace with real data)
+function updateHistory() {
+    const historyDiv = document.getElementById('history');
+    const mockHistory = [
+        { time: "10:30 AM", date: new Date().toLocaleDateString() },
+        { time: "8:15 AM", date: new Date().toLocaleDateString() },
+        { time: "10:30 AM", date: new Date(Date.now() - 86400000).toLocaleDateString() }
+    ];
+
+    historyDiv.innerHTML = mockHistory.map(item => `
+        <div class="history-item">
+            <div class="d-flex justify-content-between">
+                <span><i class="fas fa-clock me-2"></i>${item.time}</span>
+                <small class="text-muted">${item.date}</small>
+            </div>
+        </div>
+    `).join('');
 }
 
-#pillCount {
-    color: #0d6efd;
-    font-weight: 700;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
-}
-
-.btn-lg {
-    padding: 12px 30px;
-    font-size: 1.1rem;
-    border-radius: 50px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    transition: all 0.3s;
-}
-
-.btn-lg:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 8px rgba(0,0,0,0.15);
-}
-
-.list-group-item {
-    border-left: none;
-    border-right: none;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 1.5rem;
-    transition: background-color 0.2s;
-}
-
-.list-group-item:last-child {
-    border-bottom: none;
-}
-
-.list-group-item:hover {
-    background-color: #f1f8ff;
-}
+updateHistory();
