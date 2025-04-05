@@ -1,39 +1,33 @@
 /* Light Mode (Default) */
-:root {
-    --bg-color: #f8f9fa;
-    --text-color: #212529;
-    --card-bg: #ffffff;
-    --border-color: #dee2e6;
-}
-
-/* Dark Mode */
-[data-theme="dark"] {
-    --bg-color: #121212;
-    --text-color: #e0e0e0;
-    --card-bg: #1e1e1e;
-    --border-color: #444;
-}
-
-/* Base Styles */
 body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
+    background-color: #f8f9fa;
+    color: #212529;
     transition: all 0.3s ease;
 }
 
 .card {
-    background-color: var(--card-bg);
-    border-color: var(--border-color);
-    transition: all 0.3s ease;
+    background-color: white;
+    border-color: #dee2e6;
+}
+
+/* Dark Mode */
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+body.dark-mode .card {
+    background-color: #1e1e1e;
+    border-color: #444;
 }
 
 /* Eye Comfort Filter (Works in both modes) */
-.eye-comfort {
-    filter: sepia(0.3) saturate(0.8) brightness(1.05);
+body.eye-comfort {
+    filter: sepia(0.3) saturate(0.8) brightness(1.1) !important;
 }
 
-[data-theme="dark"].eye-comfort {
-    filter: sepia(0.2) brightness(0.9) hue-rotate(180deg);
+body.dark-mode.eye-comfort {
+    filter: sepia(0.2) brightness(0.9) hue-rotate(180deg) !important;
 }
 
 /* Toggle Styles */
