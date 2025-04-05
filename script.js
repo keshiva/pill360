@@ -1,58 +1,47 @@
-// Firebase Configuration (replace with your actual config)
-const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    databaseURL: "https://YOUR_PROJECT.firebaseio.com",
-    projectId: "YOUR_PROJECT",
-    storageBucket: "YOUR_PROJECT.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
-};
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
+.card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+}
 
-// DOM Elements
-const pillCountEl = document.getElementById('pillCount');
-const dispenseBtn = document.getElementById('dispenseBtn');
-const pillHistoryEl = document.getElementById('pillHistory');
+#pillCount {
+    color: #0d6efd;
+    font-weight: 700;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+}
 
-// Real-time Database Listeners
-database.ref('pills/count').on('value', (snapshot) => {
-    const count = snapshot.val() || 0;
-    pillCountEl.textContent = count;
-});
+.btn-lg {
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    border-radius: 50px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: all 0.3s;
+}
 
-database.ref('pills/history').limitToLast(10).on('value', (snapshot) => {
-    pillHistoryEl.innerHTML = '';
-    const history = snapshot.val() || {};
+.btn-lg:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+}
 
-    Object.entries(history).forEach(([timestamp, data]) => {
-        const time = new Date(parseInt(timestamp)).toLocaleTimeString();
-        const listItem = document.createElement('div');
-        listItem.className = 'list-group-item';
-        listItem.innerHTML = `
-            <div>
-                <strong>${data.pillName || 'Medication'}</strong>
-                <div class="text-muted small">${data.dose || ''}</div>
-            </div>
-            <div class="text-end">
-                <small class="text-muted">${time}</small>
-                <div class="badge bg-primary">Dispensed</div>
-            </div>
-        `;
-        pillHistoryEl.appendChild(listItem);
-    });
-});
+.list-group-item {
+    border-left: none;
+    border-right: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    transition: background-color 0.2s;
+}
 
-// Dispense Button Handler
-dispenseBtn.addEventListener('click', () => {
-    // Send command to Arduino
-    fetch('http://YOUR_ESP32_IP/dispense', { 
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ time: Date.now() })
-    })
-    .catch(error => console.error('Dispense error:', error));
-});
+.list-group-item:last-child {
+    border-bottom: none;
+}
+
+.list-group-item:hover {
+    background-color: #f1f8ff;
+}
