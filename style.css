@@ -1,30 +1,43 @@
+/* Light Mode (Default) */
 :root {
-  --bg-color: #f8f9fa;
-  --text-color: #212529;
-  --card-bg: #ffffff;
-  --border-color: #dee2e6;
+    --bg-color: #f8f9fa;
+    --text-color: #212529;
+    --card-bg: #ffffff;
+    --border-color: #dee2e6;
 }
 
+/* Dark Mode */
 [data-theme="dark"] {
-  --bg-color: #121212;
-  --text-color: #f8f9fa;
-  --card-bg: #1e1e1e;
-  --border-color: #444;
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --card-bg: #1e1e1e;
+    --border-color: #444;
 }
 
-/* Blue Light Filter (works in both modes) */
-.blue-light-active {
-  filter: sepia(0.3) saturate(0.7) brightness(1.1);
-}
-
+/* Base Styles */
 body {
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  transition: all 0.3s ease;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: all 0.3s ease;
 }
 
 .card {
-  background-color: var(--card-bg);
-  border-color: var(--border-color);
-  transition: all 0.3s ease;
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+    transition: all 0.3s ease;
+}
+
+/* Eye Comfort Filter (Works in both modes) */
+.eye-comfort {
+    filter: sepia(0.3) saturate(0.8) brightness(1.05);
+}
+
+[data-theme="dark"].eye-comfort {
+    filter: sepia(0.2) brightness(0.9) hue-rotate(180deg);
+}
+
+/* Toggle Styles */
+.form-check-input:checked {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
 }
