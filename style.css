@@ -1,57 +1,30 @@
 :root {
-    --bg-color: #f8f9fa;
-    --text-color: #212529;
-    --card-bg: #ffffff;
-    --border-color: #dee2e6;
-    --blue-light-opacity: 0;
+  --bg-color: #f8f9fa;
+  --text-color: #212529;
+  --card-bg: #ffffff;
+  --border-color: #dee2e6;
 }
 
 [data-theme="dark"] {
-    --bg-color: #121212;
-    --text-color: #f8f9fa;
-    --card-bg: #1e1e1e;
-    --border-color: #444;
-    --blue-light-opacity: 0; /* Disabled in dark mode */
+  --bg-color: #121212;
+  --text-color: #f8f9fa;
+  --card-bg: #1e1e1e;
+  --border-color: #444;
+}
+
+/* Blue Light Filter (works in both modes) */
+.blue-light-active {
+  filter: sepia(0.3) saturate(0.7) brightness(1.1);
 }
 
 body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    transition: all 0.3s ease;
-    position: relative;
-}
-
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255, 166, 0, 0.3); /* Orange tint */
-    opacity: var(--blue-light-opacity);
-    pointer-events: none;
-    z-index: 1000;
-    transition: opacity 0.3s ease;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: all 0.3s ease;
 }
 
 .card {
-    background-color: var(--card-bg);
-    border-color: var(--border-color);
-}
-
-.history-item {
-    padding: 10px 15px;
-    border-bottom: 1px solid var(--border-color);
-}
-
-/* Toggle styling */
-.form-check-input:checked {
-    background-color: #0d6efd;
-    border-color: #0d6efd;
-}
-
-/* Blue light filter container */
-#blueLightContainer {
-    width: 200px;
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+  transition: all 0.3s ease;
 }
