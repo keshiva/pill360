@@ -5,6 +5,7 @@ const darkModeToggle = document.getElementById('darkModeToggle');
 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 const currentMode = localStorage.getItem('darkMode') || (prefersDark ? 'enabled' : 'disabled');
 
+// Apply dark mode immediately on page load
 if (currentMode === 'enabled') {
     document.body.classList.add('dark');
     darkModeToggle.checked = true;
