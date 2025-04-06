@@ -1,33 +1,16 @@
-// Initialize Firebase (if using)
-const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "your-project.firebaseapp.com",
-    databaseURL: "https://your-project.firebaseio.com",
-    projectId: "your-project",
-    storageBucket: "your-project.appspot.com",
-    messagingSenderId: "123456789",
-    appId: "1:123456789:web:abcdef123456"
-};
-
-// Initialize Firebase (comment out if not using)
-// firebase.initializeApp(firebaseConfig);
-
 // DOM Elements
 const alarmLog = document.getElementById('alarmLog');
 const refreshBtn = document.getElementById('refreshLogs');
+const nextAlarmTime = document.getElementById('nextAlarmTime');
+const nextMedication = document.getElementById('nextMedication');
 
 // Fetch logs from server
 async function fetchAlarmLogs() {
     try {
-        // For text file logging
         const response = await fetch('alarm_log.txt?cache=' + new Date().getTime());
         const logText = await response.text();
-        
-        // For Firebase (alternative)
-        // const snapshot = await firebase.database().ref('alarms').once('value');
-        // const logs = snapshot.val();
-        
         displayLogs(parseLogText(logText));
+        updateNextAlarm(logText);
     } catch (error) {
         console.error("Error fetching logs:", error);
         alarmLog.innerHTML = `
@@ -44,7 +27,12 @@ function parseLogText(text) {
         .filter(line => line.trim() !== '')
         .map(line => {
             const [datetime, message] = line.split(' - ');
-            return { datetime, message };
+            return { 
+                datetime: datetime.trim(),
+                message: message.trim(),
+                eventType: message.includes('stopped') ? 'stopped' : 
+                          message.includes('triggered') ? 'triggered' : 'unknown'
+            };
         })
         .reverse(); // Show newest first
 }
@@ -61,13 +49,52 @@ function displayLogs(logs) {
     }
 
     alarmLog.innerHTML = logs.map(log => `
-        <div class="log-entry">
-            <div class="log-message">${log.message}</div>
+        <div class="log-entry ${log.eventType}">
+            <div class="log-message">
+                <i class="${getIconForEvent(log.eventType)}"></i> 
+                ${log.message}
+            </div>
             <div class="log-time">
                 <i class="far fa-clock"></i> ${log.datetime}
             </div>
         </div>
     `).join('');
+}
+
+// Get appropriate icon for event type
+function getIconForEvent(eventType) {
+    switch(eventType) {
+        case 'stopped': return 'fas fa-fingerprint';
+        case 'triggered': return 'fas fa-bell';
+        default: return 'fas fa-info-circle';
+    }
+}
+
+// Update next alarm display
+function updateNextAlarm(logText) {
+    const logs = parseLogText(logText);
+    const futureAlarms = logs.filter(log => 
+        log.message.includes('scheduled') || log.message.includes('Alarm set')
+    );
+    
+    if (futureAlarms.length > 0) {
+        const nextAlarm = futureAlarms[0];
+        nextAlarmTime.textContent = extractTimeFromMessage(nextAlarm.message);
+        nextMedication.textContent = extractMedFromMessage(nextAlarm.message);
+    } else {
+        nextAlarmTime.textContent = '--:-- --';
+        nextMedication.textContent = 'No alarms scheduled';
+    }
+}
+
+function extractTimeFromMessage(message) {
+    const timeMatch = message.match(/(\d{1,2}:\d{2} [AP]M)/);
+    return timeMatch ? timeMatch[0] : '--:-- --';
+}
+
+function extractMedFromMessage(message) {
+    const medMatch = message.match(/for (.+?) at/);
+    return medMatch ? medMatch[1] : 'Medication';
 }
 
 // Set up refresh button
@@ -82,14 +109,3 @@ refreshBtn.addEventListener('click', () => {
 // Initial load and auto-refresh
 fetchAlarmLogs();
 setInterval(fetchAlarmLogs, 30000); // Refresh every 30 seconds
-
-// Optional: If using Firebase realtime updates
-/*
-firebase.database().ref('alarms').on('value', (snapshot) => {
-    const logs = [];
-    snapshot.forEach(childSnapshot => {
-        logs.push(childSnapshot.val());
-    });
-    displayLogs(logs.reverse());
-});
-*/
