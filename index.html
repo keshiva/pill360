@@ -21,7 +21,8 @@
                 
                 <div class="d-flex justify-content-between align-items-center mt-3">
                     <div>
-                        <h5>Next Alarm: <span id="nextAlarmTime">6:09:50 PM</span></h5>
+                        <h5>Next Alarm: <span id="nextAlarmTime">--:-- --</span></h5>
+                        <small class="text-muted" id="nextMedication">No alarms scheduled</small>
                     </div>
                     <button id="refreshLogs" class="btn btn-sm btn-outline-primary">
                         <i class="fas fa-sync-alt"></i> Refresh
@@ -35,7 +36,6 @@
             <div class="card-body">
                 <h3><i class="fas fa-history"></i> Alarm Log</h3>
                 <div id="alarmLog" class="mt-3">
-                    <!-- Logs will load here -->
                     <div class="text-center py-5 text-muted">
                         <i class="fas fa-spinner fa-spin"></i> Loading alarm history...
                     </div>
@@ -44,10 +44,6 @@
         </div>
     </div>
 
-    <!-- Firebase (if using) -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    
     <!-- Custom JavaScript -->
     <script src="script.js"></script>
 </body>
