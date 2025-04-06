@@ -1,3 +1,26 @@
+// Dark Mode Toggle
+const darkModeToggle = document.getElementById('darkModeToggle');
+
+// Check for saved user preference or use system preference
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+const currentMode = localStorage.getItem('darkMode') || (prefersDark ? 'enabled' : 'disabled');
+
+if (currentMode === 'enabled') {
+    document.body.classList.add('dark');
+    darkModeToggle.checked = true;
+}
+
+// Toggle dark mode
+darkModeToggle.addEventListener('change', () => {
+    if (darkModeToggle.checked) {
+        document.body.classList.add('dark');
+        localStorage.setItem('darkMode', 'enabled');
+    } else {
+        document.body.classList.remove('dark');
+        localStorage.setItem('darkMode', 'disabled');
+    }
+});
+
 // DOM Elements
 const alarmLog = document.getElementById('alarmLog');
 const refreshBtn = document.getElementById('refreshLogs');
