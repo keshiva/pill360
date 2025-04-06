@@ -1,37 +1,64 @@
-/* Light Mode (Default) */
 body {
     background-color: #f8f9fa;
-    color: #212529;
-    transition: all 0.3s ease;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .card {
-    background-color: white;
-    border-color: #dee2e6;
+    border: none;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
 }
 
-/* Dark Mode */
-body.dark-mode {
+#alarmLog {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.log-entry {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    transition: all 0.2s;
+}
+
+.log-entry:hover {
+    background-color: #f1f8ff;
+}
+
+.log-time {
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin-top: 3px;
+}
+
+.log-message {
+    font-weight: 500;
+}
+
+#refreshLogs {
+    transition: transform 0.3s;
+}
+
+#refreshLogs:hover {
+    transform: rotate(180deg);
+}
+
+/* Dark mode support */
+body.dark {
     background-color: #121212;
-    color: #e0e0e0;
+    color: #f8f9fa;
 }
 
-body.dark-mode .card {
+body.dark .card {
     background-color: #1e1e1e;
-    border-color: #444;
+    color: #f8f9fa;
 }
 
-/* Eye Comfort Filter (Works in both modes) */
-body.eye-comfort {
-    filter: sepia(0.3) saturate(0.8) brightness(1.1) !important;
+body.dark .log-entry {
+    border-color: #333;
 }
 
-body.dark-mode.eye-comfort {
-    filter: sepia(0.2) brightness(0.9) hue-rotate(180deg) !important;
-}
-
-/* Toggle Styles */
-.form-check-input:checked {
-    background-color: #0d6efd;
-    border-color: #0d6efd;
+body.dark .log-entry:hover {
+    background-color: #2a2a2a;
 }
